@@ -45,3 +45,4 @@ captures
 .cxx
 local.properties
 xcuserdata
+core/core.podspec
