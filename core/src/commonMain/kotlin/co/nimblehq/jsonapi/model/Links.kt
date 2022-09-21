@@ -1,6 +1,6 @@
 package co.nimblehq.jsonapi.model
 
-import co.nimblehq.jsonapi_mapper.serializer.LinkSerializer
+import co.nimblehq.jsonapi.serializer.LinkSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
