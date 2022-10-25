@@ -19,6 +19,23 @@ class JsonApi(val json: Json) {
         }
     }
 
+    inline fun <reified Data, reified Meta> decodeWithMetaFromJsonApiString(string: String) : Pair<Data, Meta> {
+        val jsonApiObject: JsonApiObject = json.decodeFromString(string)
+        val includedData = jsonApiObject.included ?: listOf()
+        val map = includedMap(includedData)
+        return when (val type = jsonApiObject.type) {
+            is JsonApiResponseType.Data ->
+                return Pair(
+                    this.decode(type.data, map),
+                    this.decode(jsonApiObject.meta ?: ApiJson.nil)
+                )
+            is JsonApiResponseType.Meta ->
+                throw JsonApiException("No data field, please use decodeFromJsonApiString instead")
+            is JsonApiResponseType.Errors ->
+                throw JsonApiException(type.errors)
+        }
+    }
+
     inline fun <reified T> decode(dataType: DataType<Resource>, includedMap: Map<ResourceIdentifier, Resource>): T {
         return when (dataType) {
             is DataType.Single -> decodeSingle(dataType.item, includedMap)
