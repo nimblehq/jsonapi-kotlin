@@ -1,7 +1,7 @@
 name: Review pull request
 
 on:
-  push
+  pull_request
 
 jobs:
   review_pull_request:
