@@ -276,7 +276,30 @@ data class NetworkIncludedMockModel(
 val data = JsonApi(Json).decodeFromJsonApiString<List<NetworkIncludedMockModel>>(response)
 ```
 
-## Metadata
+### Only Meta
+
+When mapping response with only `meta` and no `data`, pass the meta object as the resource type.
+
+```
+val response = """
+{
+  "meta": {
+    "message": "Success"
+  }
+}
+""".trimIndent()
+```
+
+```
+@Serializable
+data class NetworkOnlyMetaMockModel(
+    val message: String
+)
+
+val data = JsonApi(Json).decodeFromJsonApiString<NetworkOnlyMetaMockModel>(response)
+```
+
+### Meta
 
 Use `decodeWithMetaFromJsonApiString` instead of `decodeFromJsonApiString` to get `meta` along with object.
 

@@ -3,6 +3,7 @@ package co.nimblehq.jsonapi
 import co.nimblehq.jsonapi.helpers.mock.NetworkIncludedMockModel
 import co.nimblehq.jsonapi.helpers.mock.NetworkMetaMockModel
 import co.nimblehq.jsonapi.helpers.mock.NetworkMockModel
+import co.nimblehq.jsonapi.helpers.mock.NetworkOnlyMetaMockModel
 import co.nimblehq.jsonapi.json.JsonApi
 import co.nimblehq.jsonapi.model.JsonApiException
 import kotlinx.serialization.json.Json
@@ -63,6 +64,14 @@ class JsonApiTest {
         assertEquals(decoded.first().body, "The shortest article. Ever.")
         assertEquals(decoded.first().created, "2015-05-22T14:56:29.000Z")
         assertEquals(decoded.first().author.name, "John")
+    }
+
+    @Test
+    fun `when calling decodeFromJsonApiString with single object with only meta it returns correct object`() {
+        val decoded = jsonApi.decodeFromJsonApiString<NetworkOnlyMetaMockModel>(
+            NetworkOnlyMetaMockModel.responseWithMetaOnly
+        )
+        assertEquals(decoded.message, "Success")
     }
 
     @Test
