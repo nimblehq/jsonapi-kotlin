@@ -12,6 +12,7 @@ version = "0.1.0"
 kotlin {
     android {
         publishLibraryVariants("release", "debug")
+        publishLibraryVariantsGroupedByFlavor = true
     }
     iosX64()
     iosArm64()
