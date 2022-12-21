@@ -14,7 +14,8 @@ docs:
   ```
   repositories {
      maven {
-         url = "https://maven.pkg.github.com/mohitrajput987/analytics-sdk"
+         name = "Github Packages"
+         url = uri("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
          credentials {
              username = GITHUB_USER
              password = GITHUB_TOKEN
