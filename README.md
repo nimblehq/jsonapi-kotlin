@@ -1,3 +1,6 @@
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nimblehq/jsonapi-kotlin/review_pull_request.yml?branch=develop)
+![GitHub Packages](https://img.shields.io/badge/version-0.1.0-blue)
+
 # JSON:API Kotlin
 
 Kotlin module for mapping JSON response, in the format of [JSON:API](https://jsonapi.org) to objects.
