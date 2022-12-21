@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - chore/publish-packages
   workflow_dispatch:
 
 jobs:

@@ -60,3 +60,15 @@ android {
         targetSdk = 32
     }
 }
+
+publishing {
+    repositories {
+        maven {
+            setUrl("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
+            credentials {
+                username = (System.getenv("GITHUB_USER") ?: project.properties["GITHUB_USER"])?.toString()
+                password = (System.getenv("GITHUB_TOKEN") ?: project.properties["GITHUB_TOKEN"])?.toString()
+            }
+        }
+    }
+}
