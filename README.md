@@ -1,3 +1,6 @@
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nimblehq/jsonapi-kotlin/review_pull_request.yml?branch=develop)
+![GitHub Packages](https://img.shields.io/badge/version-0.1.0-blue)
+
 # JSON:API Kotlin
 
 Kotlin module for mapping JSON response, in the format of [JSON:API](https://jsonapi.org) to objects.
@@ -6,80 +9,68 @@ Made specifically for Kotlin Multiplatform Mobile (KMM).
 
 ## Installation
 
-### Git Submodule
+Following [Working with the Gradle registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry)
+docs:
 
-1. Add this library as a submodule of your project.
+- Add GitHub Packages repository at the root project level.
 
-```
-git submodule add git@github.com:nimblehq/jsonapi-kotlin.git
-```
+  ```
+  repositories {
+     maven {
+         name = "Github Packages"
+         url = uri("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
+         credentials {
+             username = GITHUB_USER
+             password = GITHUB_TOKEN
+         }
+     }
+  }
+  ```
 
-### Manually
+  - GITHUB_USER: the developer's GitHub user to access GitHub Packages.
+  - GITHUB_TOKEN: the developer's GitHub personal access token with at least `packages:read` permission.
 
-1. Clone the repository
+- Open `build.gradle.kts` of `shared` module, or any KMM module that will use the library.
 
-```
-git clone git@github.com:nimblehq/jsonapi-kotlin.git
-```
-
-2. Copy the cloned folder to the `root` of your project.
+  ```
+  kotlin {
+      sourceSets {
+          val commonMain by getting {
+              dependencies {
+                  implementation("co.nimblehq.jsonapi:core:${LATEST_VERSION}")
+              }
+          }
+          ...
+      }
+      ...
+  }
+  ```
 
 ## Usage
 
-Open `root` `settings.gradle.kts` and add the library as an include.
+- Use with `kotlinx.serialization.json.Json`. Call `decodeFromJsonApiString` to map string to object.
 
-```
-rootProject.name = "YourApp"
-include(":androidApp")
-include(":shared")
-// .. Add this line
-include(":nimble-jsonapi-kotlin:core")
-```
-
-### Add Dependency to `shared` Module
-
-Open `build.gradle.kts` of `shared` module, or any KMM module that will use the library.
-
-```
-sourceSets {
-  val commonMain by getting {
-      dependencies {
-          // ...
-          // Add this line
-            implementation(project(":jsonapi-kotlin:core"))
-        }
-    }
-  // ...
-}
-```
-
-### Use with `kotlinx.serialization.json.Json`
-
-Call `decodeFromJsonApiString` to map string to object.
-
-```
-@Serializable
-data class ExampleModel(val title: String)
-val body = """
-{
-  "data": {
-    "type": "articles",
-    "id": "1",
-    "attributes": {
-      "title": "JSON:API paints my bikeshed!"
+  ```
+  @Serializable
+  data class ExampleModel(val title: String)
+  val body = """
+  {
+    "data": {
+      "type": "articles",
+      "id": "1",
+      "attributes": {
+        "title": "JSON:API paints my bikeshed!"
+      }
     }
   }
-}
-"""
-val json = Json {
-     prettyPrint = true
-     isLenient = true
-     ignoreUnknownKeys = true
- }
-val data = JsonApi(json).decodeFromJsonApiString<ExampleModel>(body)
-```
-
-For installation example, see this [commit](https://github.com/suho/kmm-ic/pull/89/commits/010631cd00144edecfcc42f3a057c0294fa5571a).
+  """
+  val json = Json {
+       prettyPrint = true
+       isLenient = true
+       ignoreUnknownKeys = true
+   }
+  val data = JsonApi(json).decodeFromJsonApiString<ExampleModel>(body)
+  ```
 
 ## Features
 

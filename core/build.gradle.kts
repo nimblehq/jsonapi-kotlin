@@ -1,33 +1,23 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     id("com.android.library")
     kotlin("plugin.serialization")
     id("kotlinx-serialization")
+    id("maven-publish")
 }
 
+group = "co.nimblehq.jsonapi"
+version = "0.1.0"
+
 kotlin {
-    android()
+    android {
+        publishLibraryVariants("release", "debug")
+        publishLibraryVariantsGroupedByFlavor = true
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
 
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
-        framework {
-            baseName = "core"
-        }
-        xcodeConfigurationToNativeBuildType["Debug Staging"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["Debug Production"] = NativeBuildType.DEBUG
-        xcodeConfigurationToNativeBuildType["Release Staging"] = NativeBuildType.RELEASE
-        xcodeConfigurationToNativeBuildType["Release Production"] = NativeBuildType.RELEASE
-    }
-    
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -68,5 +58,17 @@ android {
     defaultConfig {
         minSdk = 23
         targetSdk = 32
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            setUrl("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
+            credentials {
+                username = (System.getenv("GITHUB_USER") ?: project.properties["GITHUB_USER"])?.toString()
+                password = (System.getenv("GITHUB_TOKEN") ?: project.properties["GITHUB_TOKEN"])?.toString()
+            }
+        }
     }
 }
