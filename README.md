@@ -12,18 +12,21 @@ Made specifically for Kotlin Multiplatform Mobile (KMM).
 Following [Working with the Gradle registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry)
 docs:
 
-- Add GitHub Packages repository at the root project level.
+- Add GitHub Packages repository to the root project `build.gradle.kts` at `allprojects` block.
 
   ```
-  repositories {
-     maven {
-         name = "Github Packages"
-         url = uri("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
-         credentials {
-             username = GITHUB_USER
-             password = GITHUB_TOKEN
-         }
-     }
+  allprojects {
+      repositories {
+          ...
+          maven {
+             name = "Github Packages"
+             url = uri("https://maven.pkg.github.com/nimblehq/jsonapi-kotlin")
+             credentials {
+                 username = GITHUB_USER
+                 password = GITHUB_TOKEN
+             }
+          }
+      }
   }
   ```
 
